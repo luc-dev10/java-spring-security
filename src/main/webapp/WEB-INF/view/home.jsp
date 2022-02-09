@@ -19,8 +19,14 @@
     <p></p>
 
     <!-- managers -->
-    <a href="${pageContext.request.contextPath}/admin">Admin</a>
-    <a href="${pageContext.request.contextPath}/manager">Manager</a>
+
+    <security:authorize access="hasRole('ADMIN')">
+        <a href="${pageContext.request.contextPath}/admin">Admin</a>
+    </security:authorize>
+
+    <security:authorize access="hasRole('MANAGER')">
+        <a href="${pageContext.request.contextPath}/manager">Manager</a>
+    </security:authorize>
 
 	<!-- Add a logout button -->
 	<form:form action="${pageContext.request.contextPath}/logout" method="POST">
