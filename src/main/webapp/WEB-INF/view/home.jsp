@@ -18,6 +18,10 @@
     <p>role(s): <security:authentication property="principal.authorities"/></p>
     <p></p>
 
+    <!-- managers -->
+    <a href="${pageContext.request.contextPath}/admin">Admin</a>
+    <a href="${pageContext.request.contextPath}/manager">Manager</a>
+
 	<!-- Add a logout button -->
 	<form:form action="${pageContext.request.contextPath}/logout" method="POST">
 		<input type="submit" value="Logout" />
