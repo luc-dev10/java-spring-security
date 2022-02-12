@@ -1,29 +1,29 @@
 package com.security.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    // Autowired Data source
+    @Autowired
+    private DataSource securityDataSource;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        //         add users in memory
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-
-        auth.inMemoryAuthentication()
-            .withUser(users.username("user")
-                           .password("1234")
-                           .roles("USER", "MANAGER"))
-            .withUser(users.username("admin")
-                           .password("1234")
-                           .roles("ADMIN"));
-
+        // JDBC Authentication
+        auth.jdbcAuthentication()
+            .dataSource(securityDataSource);
+        
     }
 
     // Override default configuration in Spring
@@ -32,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
             .antMatchers("/")
-            .hasAnyRole("ADMIN", "EMPLOYEE", "MANAGER")
+            .hasAnyRole("EMPLOYEE", "ADMIN", "MANAGER")
             .antMatchers("/manager/**")
-            .hasAnyRole("MANAGER")
+            .hasAnyRole("EMPLOYEE", "MANAGER")
             .antMatchers("/admin/**")
             .hasAnyRole("ADMIN")
             .and()
