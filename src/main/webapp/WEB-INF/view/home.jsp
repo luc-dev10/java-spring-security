@@ -20,11 +20,11 @@
 
     <!-- managers -->
 
-    <security:authorize access="hasRole('ADMIN')">
+    <security:authorize access="hasRole('ROLE_ADMIN')">
         <a href="${pageContext.request.contextPath}/admin">Admin</a>
     </security:authorize>
 
-    <security:authorize access="hasRole('MANAGER')">
+    <security:authorize access="hasRole('ROLE_EMPLOYEE')">
         <a href="${pageContext.request.contextPath}/manager">Manager</a>
     </security:authorize>
 
